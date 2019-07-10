@@ -337,5 +337,11 @@ The pipeline should be complete, select `Deploy`, and watch it run.
 
 # AWESOMESAUCE, YOU MADE IT TO THE END 🙌
 
+## Upcoming subjects:
+* Triggers
+* Pushing to different environments.
+* Approval pipelines.
+
+
 
 
