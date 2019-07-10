@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connector-deployment
+  labels:
+    app: splat
+spec:
+  replicas: {{ .Values.deploymentReplicas }}
+  selector:
+    matchLabels:
+      name: connector-pod
+      app: splat
+  template:
+    metadata:
+      name: connector-pod
+      labels:
+        name: connector-pod
+        app: splat
+    spec:
+      containers:
+      - name: splat-connector
+        image: {{ .Values.connectorImage }}
+        ports:
+          - containerPort: {{ .Values.connectorContainerPort }}

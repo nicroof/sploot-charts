@@ -1,0 +1,25 @@
+#orchestrator-deployment-definition.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator-deployment
+  labels:
+    app: splat
+spec:
+  replicas: {{ .Values.deploymentReplicas }}
+  selector:
+    matchLabels:
+      name: orchestrator-pod
+      app: splat
+  template:
+    metadata:
+      name: orchestrator-pod
+      labels:
+        name: orchestrator-pod
+        app: splat
+    spec:
+      containers:
+      - name: splat-orchestrator
+        image: {{ .Values.orchestratorImage }}
+        ports:
+          - containerPort: {{ .Values.orchestratorContainerPort }}
