@@ -208,12 +208,23 @@ Fill out the form as follows, ensuring the name provided is descriptive of the c
 
 ![cloud provider](https://cl.ly/c28fbd53112d/Screen%20Shot%202019-07-09%20at%205.16.53%20PM.png)
 
+#### Set up the Helm bundle as an artifact server
+Select `Setup` > `Connectors` > `Artifact Servers` > `Add Artifact Server`
+
+Fill out the form as follows. The bucket name must match the one selected on GCS.
+
+![artifact server](https://cl.ly/fce023a23538/Screen%20Shot%202019-07-10%20at%2011.13.24%20AM.png)
+
 #### Set up the service
 Select `Setup` > `Splat` > `Service` > `Add Service`
 
 Fill the form out as follows, use a descriptive name.
 
 ![helm service](https://cl.ly/57c1ad3d7542/Screen%20Shot%202019-07-09%20at%205.22.03%20PM.png)
+
+After submitting, you will be redirected to a new screen. Select `Add Chart Specification`. Fill out this form, selecting the Helm repository set up in the previous section.
+
+![service set up](https://cl.ly/757c13917c64/Screen%20Shot%202019-07-10%20at%202.48.48%20PM.png)
 
 #### Set up the environment
 Select `Setup` > `Splat` > `Environments` > `Add Environment`
@@ -228,20 +239,12 @@ Select the service, and the cloud provider that were set up in the previous step
 
 ![service infrastructure](https://cl.ly/1413193b7816/Screen%20Shot%202019-07-09%20at%205.24.22%20PM.png)
 
-#### Set up the Helm bundle as an artifact server
-Select `Setup` > `Connectors` > `Artifact Servers` > `Add Artifact Server`
-
-Fill out the form as follows. The bucket name must match the one selected on GCS.
-
-![artifact server](https://cl.ly/fce023a23538/Screen%20Shot%202019-07-10%20at%2011.13.24%20AM.png)
-
 #### Set up workflows
 
 _Workflows are actions that can be chained together to form a pipeline. A workflow may package a Docker image, push code, etc. They can also run individually, outside of a pipeline._ 
 
-* Cloudbuild workflow
+The first workflow we set up is to push the container to the Kubernetes cluster. Select `Setup` > `Splat` > `Workflows` > `Add workflow`. Fill out the form as follows.
 
-* Push to environment workflow
 
 ![env workflow](https://cl.ly/97bcec236d67/Screen%20Shot%202019-07-09%20at%205.32.51%20PM.png)
 
@@ -255,6 +258,84 @@ Select `Helm Deploy (Incomplete)` to finish the set up.
 Fill out the form as follows.
 
 ![helm deploy](https://cl.ly/cfe2c5bca623/Screen%20Shot%202019-07-09%20at%205.38.22%20PM.png)
+
+Next, set up a Cloudbuild workflow.
+
+_Cloudbuild is a Google Cloud service that allows building Docker images based on a configuration file, and pushed them to Google Cloud Registry. The configuration file is `cloudbuild.yaml` and it is included in the root of the source code for each Splat microservice._
+
+```
+# cloudbuild.yaml
+steps:
+- name: 'gcr.io/cloud-builders/yarn'
+  args: ['install']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '--tag=us.gcr.io/hsp-splat-dev/splat-connector', '.']
+- name: 'us.gcr.io/odsp-management/ncr-cloud-builders-helm'
+  env:
+  - 'HELM_REPO_NAME=splat-helm'
+  - 'HELM_REPO_URL=gs://splat-helm-chart'
+  - 'CHART_PATH=helm'
+  - 'CHART_VERSION=0.8.1'
+  - 'CHART_NAME=splat-deployer'
+  - 'APP_VERSION=$REVISION_ID'
+images: ['us.gcr.io/hsp-splat-dev/splat-connector']
+options:
+  workerPool: 'odsp-management/cloud-build-workers'
+```
+
+Select `Setup` > `Splat` > `Workflows` > `Add workflow`. Fill out the form as follows.
+
+![cloudbuild form](https://cl.ly/15514b25a294/Screen%20Shot%202019-07-10%20at%203.06.23%20PM.png)
+
+Upon submission, the `Workflow Overview` screen will be displayed.
+
+![workflow overview](https://cl.ly/87d91c33c2f9/Screen%20Shot%202019-07-09%20at%205.35.24%20PM.png)
+
+Select  the `X` next to `Artifact Collection (Incomplete)` to delete it. Then select `Add Command` in the `Collect Artifact` section.
+
+Select `Shell Script` from the dialog, then fill out the form as follows (actual code below screenshot.) Make sure that it's pointing to the right repository.
+
+![shell script](https://cl.ly/83d16e125c7f/Screen%20Shot%202019-07-10%20at%203.13.56%20PM.png)
+
+```
+echo "BUILDING SPLAT"
+
+echo ${BUILD.APP_VERSION}
+
+# REMOVE PREVIOUS SPLAT DIR
+rm -rf splat
+
+# CLONE THE REPOSITORY
+git clone https://almgit.ncr.com/scm/nolo/splat.git
+
+# CD INTO THE DIRECTORY
+cd splat
+
+# SUBMIT CLOUD BUILD
+gcloud builds submit --config=cloudbuild.yaml
+```
+
+At this point all that's left to do before deployment is putting together a pipeline.
+
+#### Set up pipeline
+
+_There can (and should) be multiple pipelines for different purposes. This example is a very simple pipeline that builds the image on Cloudbuild, then pushes it to the Kubernetes cluster._
+
+Select `Setup` > `Splat` > `Pipelines` > `Add Pipeline`
+
+Fill out the name, and description, then submit.
+
+Select `Click to add Pipeline Stage`. Fill out the form, selecting the Cloudbuild workflow created in the previos step.
+
+![pipeline workflow](https://cl.ly/34d073e7b0b0/Screen%20Shot%202019-07-10%20at%203.24.24%20PM.png)
+
+Repeat the sequence to add a Workflow, this time selecting the push Workflow created in the previous step.
+
+The pipeline should be complete, select `Deploy`, and watch it run.
+
+![deploy](https://cl.ly/aaaeae438c39/Screen%20Shot%202019-07-10%20at%203.26.44%20PM.png)
+
+# AWESOMESAUCE, YOU MADE IT TO THE END 🙌
 
 
 
