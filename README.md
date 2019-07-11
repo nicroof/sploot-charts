@@ -335,12 +335,36 @@ The pipeline should be complete, select `Deploy`, and watch it run.
 
 ![deploy](https://cl.ly/aaaeae438c39/Screen%20Shot%202019-07-10%20at%203.26.44%20PM.png)
 
+#### Set up triggers
+
+At this point you have a pipeline that can make deployments. We will set jup triggers to kick it off when code gets merged.
+
+Select `Setup` > `Splat` > `Triggers` > `Add Trigger`
+
+_Webhook/trigger interaction between Harness and Bitbucket is really finicky. The combination shown here will allow you to link distinct pipelines to specific branches._
+
+Fill out the form as follows.
+
+![trigger](https://cl.ly/2ca8bd6b7fd5/Screen%252520Shot%2525202019-07-11%252520at%25252011.00.56%252520AM.png)
+
+_The *repo:push* event works when pushing code directly to, or when merging code into the matching branch. Merging code into a branch with the prefix `prerelease/` will kick off the pipeline._ 
+
+Once created, find the trigger in the list and select `Bitbucket Webhook`, and copy the displayed URL.
+
+Head over to your Bitbucket repo. 
+
+Select `Settings` > `Post Webhooks` > `Add webhook`
+
+Fill out the form as follows, pasting the Harness trigger URL in the URL field.
+
+![bitbucket webhook](https://cl.ly/a0e4dd7319ac/Screen%252520Shot%2525202019-07-11%252520at%25252011.08.49%252520AM.png)
+
 # AWESOMESAUCE, YOU MADE IT TO THE END 🙌
 
 ## Upcoming subjects:
-* Triggers
-* Pushing to different environments.
+* Docker images
 * Approval pipelines.
+* GKE Dashboard
 
 
 
