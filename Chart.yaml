@@ -3,4 +3,4 @@ description: Helm chart for Splat microservices deployment
 maintainers:
 - name: NCR, TinRoof Software
 name: splat-deployer
-version: 0.9.1
+version: 1.0.1

@@ -1,5 +1,5 @@
 deploymentReplicas: 3
-orchestratorImage: 'us.gcr.io/hsp-splat-dev/splat-orchestrator:latest'
+orchestratorImage: 'us.gcr.io/hsp-splat-dev/splat-orchestrator:1.0.1'
 orchestratorImageVersion: '0.7.2'
 orchestratorContainerPort: 80
 connectorImage: 'us.gcr.io/hsp-splat-dev/splat-connector:latest'
