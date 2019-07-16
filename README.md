@@ -135,7 +135,11 @@ Select `Clusters` then `Create Cluster`.
 
 ![create cluster](https://cl.ly/fbbedabf78d9/[057ce0cd9153ff2db5133531f94a3e0c]_Screen%2520Shot%25202019-07-09%2520at%25204.21.17%2520PM.png)
 
-Fill out a name for the cluster. The defaults for the cluster type, and the zone should be okay, but change them if desired. Down in the `default pool` area, increase the machine type to `4 CPU`. Feel free to play around with the number of nodes, and CPUs, but check the cost calculator. The combination of 3 nodes, with 4 CPU (n1-standard-4) works well.
+Fill out a name for the cluster. The defaults for the cluster type, and the zone should be okay, but change them if desired. 
+
+For the region select `us-central-1a`, and for version select [ENTER INFORMATION HERE]
+
+Down in the `default pool` area, increase the machine type to `4 CPU`. Feel free to play around with the number of nodes, and CPUs, but check the cost calculator. The combination of 3 nodes, with 4 CPU (n1-standard-4) works well.
 
 ![4cpu](https://cl.ly/8ad602f41d65/Screen%20Shot%202019-07-09%20at%204.23.46%20PM.png)
 
