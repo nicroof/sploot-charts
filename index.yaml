@@ -2,13 +2,33 @@ apiVersion: v1
 entries:
   splat-deployer:
   - appVersion: 1.0.0
-    created: "2019-06-28T12:46:48.441837-04:00"
-    description: Helm chart for SPLOOT microservices deployment
-    digest: f8ce7593074a742385bdf227f85d1c5b2cab832c310fb6336cbe4b7df46947b4
+    created: "2019-07-16T13:36:40.220011-04:00"
+    description: Helm chart for Splat microservices deployment
+    digest: 4b3e99b212422e17fcd37dfe61b018e3d5a6bb0b3c4a0e0ccb2c30f1ee71ca26
     maintainers:
     - name: NCR, TinRoof Software
     name: splat-deployer
     urls:
     - splat-deployer-1.0.1.tgz
     version: 1.0.1
-generated: "2019-06-28T12:46:48.439635-04:00"
+  - appVersion: 1.0.0
+    created: "2019-07-16T13:36:40.215288-04:00"
+    description: Helm chart for Splat microservices deployment
+    digest: 22b4ee3757b70e009402f5e4350b5baaa200e1a81366dffe66477ea2df9ff16b
+    maintainers:
+    - name: NCR, TinRoof Software
+    name: splat-deployer
+    urls:
+    - splat-deployer-1.0.0.tgz
+    version: 1.0.0
+  - appVersion: 1.0.0
+    created: "2019-07-16T13:36:40.209919-04:00"
+    description: Helm chart for Splat microservices deployment
+    digest: 78f5f4ba838035fba17d4b6fed47b346d5a5fb1ae3bd6e249b016445fe59f170
+    maintainers:
+    - name: NCR, TinRoof Software
+    name: splat-deployer
+    urls:
+    - splat-deployer-0.9.1.tgz
+    version: 0.9.1
+generated: "2019-07-16T13:36:40.205014-04:00"
